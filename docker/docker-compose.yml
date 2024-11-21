@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16
+    container_name: school_devops
+    restart: always
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    depends_on:
+      - db
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Production"
+      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=mydb;Username=myuser;Password=mypassword"
+    ports:
+      - "5000:80"
+    networks:
+      - app_network
+
+volumes:
+  db_data:
+
+networks:
+  app_network:
