@@ -26,7 +26,7 @@ namespace backend_devops_rejsekort_v2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<UserContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql("Host=localhost;Port=5432;Database=mydb;Username=myuser;Password=mypassword"));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<UserContext>()
