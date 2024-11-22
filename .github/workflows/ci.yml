@@ -60,6 +60,9 @@ jobs:
   docker-build-push:
     needs: build-test
     runs-on: ubuntu-latest
+    permissions:
+        contents: read
+        packages: write
 
     steps:
       - name: Checkout code
@@ -70,7 +73,7 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.hej.GITHUB_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
 
       - name: Build and push Docker image
