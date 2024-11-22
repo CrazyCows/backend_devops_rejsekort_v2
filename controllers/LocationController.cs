@@ -37,15 +37,15 @@ namespace backend_devops_rejsekort_v2.controllers
                 return Unauthorized(new { error = "User is not authenticated" });
             }
 
-            var user = await _userManager.FindByIdAsync(userId);
+
+            var user = await _userManager.FindByEmailAsync(userId);
 
             if (user == null)
             {
                 return NotFound(new { error = "User not found" });
             }
-
             var existingLocationPair = await _context.LocationPairs
-                .Where(lp => lp.UserId == userId)
+                .Where(lp => lp.UserId == user.Id)
                 .OrderByDescending(lp => lp.SignInTime)
                 .Include(lp => lp.SignInLocation)
                 .Include(lp => lp.SignOutLocation)
@@ -60,7 +60,7 @@ namespace backend_devops_rejsekort_v2.controllers
             {
                 SignInLocation = location,
                 SignInTime = DateTime.UtcNow,
-                UserId = userId,
+                UserId = user.Id,
                 User = user
             };
 
@@ -85,7 +85,7 @@ namespace backend_devops_rejsekort_v2.controllers
                 return Unauthorized(new { error = "User is not authenticated" });
             }
 
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByEmailAsync(userId);
 
             if (user == null)
             {
@@ -95,7 +95,7 @@ namespace backend_devops_rejsekort_v2.controllers
             var locationPair = await _context.LocationPairs
                 .Include(lp => lp.SignInLocation)
                 .Include(lp => lp.SignOutLocation)
-                .FirstOrDefaultAsync(lp => lp.UserId == userId && lp.SignOutLocation == null);
+                .FirstOrDefaultAsync(lp => lp.UserId == user.Id && lp.SignOutLocation == null);
 
             if (locationPair == null)
             {
@@ -114,15 +114,33 @@ namespace backend_devops_rejsekort_v2.controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+
             if (string.IsNullOrEmpty(userId)) {
                 return Unauthorized(new { error = "User is not Authenticated" } );
             }
 
+            var user = await _userManager.FindByEmailAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound(new { error = "User not found" });
+            }
+
+            Console.WriteLine("---------------------------------------");
+            Console.WriteLine(userId);
+
+            Console.WriteLine("---------------------------------------");
+            Console.WriteLine("---------------------------------------");
+            Console.WriteLine(user.Id);
+
+            Console.WriteLine("---------------------------------------");
             var LocationPair = await _context.LocationPairs
                 .Include(lp => lp.SignInLocation)
                 .Include(lp => lp.SignOutLocation)
-                .FirstOrDefaultAsync(lp => lp.UserId == userId && lp.SignOutLocation == null);
+                .FirstOrDefaultAsync(lp => lp.UserId == user.Id && lp.SignOutLocation == null);
 
+            Console.WriteLine(LocationPair);
+            Console.WriteLine("---------------------------------------");
             if (LocationPair == null)
             {
                 return BadRequest(new { error = "No Sign-in location found" });

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using backend_devops_rejsekort_v2.dal;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -17,7 +18,7 @@ namespace backend_devops_rejsekort_v2.services
             _configuration = configuration;
         }
 
-        public string GenerateToken(IdentityUser user)
+        public string GenerateToken(ApplicationUser user)
         {
             var jwtSettings = _configuration.GetSection("Authentication:Jwt");
             var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings["Key"]!));

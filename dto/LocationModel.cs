@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace backend_devops_rejsekort_v2.dto
@@ -41,6 +42,7 @@ namespace backend_devops_rejsekort_v2.dto
         [Required]
         public string UserId { get; set; }
         [ForeignKey("UserId")]
+        [JsonIgnore]
         public ApplicationUser User { get; set; }
 
         public override string ToString()

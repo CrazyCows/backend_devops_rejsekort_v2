@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using backend_devops_rejsekort_v2.services;
 using Microsoft.Extensions.Configuration;
 using backend_devops_rejsekort_v2.dto;
+using backend_devops_rejsekort_v2.dal;
 
 namespace backend_devops_rejsekort_v2.controllers
 {
@@ -11,11 +12,11 @@ namespace backend_devops_rejsekort_v2.controllers
     internal class GoogleAuthController : ControllerBase
     {
 
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly TokenService _tokenService;
         private readonly IConfiguration _configuration;
 
-        public GoogleAuthController(UserManager<IdentityUser> userManager, TokenService tokenService, IConfiguration configuration)
+        public GoogleAuthController(UserManager<ApplicationUser> userManager, TokenService tokenService, IConfiguration configuration)
         {
             _userManager = userManager;
             _tokenService = tokenService;
@@ -36,7 +37,7 @@ namespace backend_devops_rejsekort_v2.controllers
 
             if (user == null)
             {
-                user = new IdentityUser { Email = payload.Email, UserName = payload.Email };
+                user = new ApplicationUser { Email = payload.Email, UserName = payload.Email };
                 var result = await _userManager.CreateAsync(user);
 
                 if (!result.Succeeded)

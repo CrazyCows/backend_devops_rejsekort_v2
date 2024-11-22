@@ -18,6 +18,8 @@ WORKDIR /app
 # Copy the published output from the build stage
 COPY --from=build /app/out ./
 
+RUN dotnet ef database update
+
 # Expose port 80 for the application
 EXPOSE 80
 

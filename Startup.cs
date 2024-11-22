@@ -28,7 +28,7 @@ namespace backend_devops_rejsekort_v2
             services.AddDbContext<UserContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<IdentityUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<UserContext>()
                 .AddDefaultTokenProviders();
 

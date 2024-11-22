@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using backend_devops_rejsekort_v2.dto;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using backend_devops_rejsekort_v2.dal;
 
 namespace backend_devops_rejsekort_v2.controllers
 {
@@ -13,10 +14,10 @@ namespace backend_devops_rejsekort_v2.controllers
     public class AuthController : ControllerBase
     {
 
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly TokenService _tokenService;
 
-        public AuthController(UserManager<IdentityUser> userManager, TokenService tokenService)
+        public AuthController(UserManager<ApplicationUser> userManager, TokenService tokenService)
         {
             _userManager = userManager;
             _tokenService = tokenService;
@@ -25,7 +26,7 @@ namespace backend_devops_rejsekort_v2.controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
-            var user = new IdentityUser { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
             Console.WriteLine(user);
             var result = await _userManager.CreateAsync(user, model.Password);
             Console.WriteLine(result);

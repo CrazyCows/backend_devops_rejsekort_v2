@@ -13,18 +13,24 @@ services:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+    
+    
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U myuser -d mydb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   app:
     build: .
     depends_on:
-      - db
+        db:
+            condition: service_healthy
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
-      ConnectionStrings__DefaultConnection: "Host=db;Port=5432;Database=mydb;Username=myuser;Password=mypassword"
+      ASPNETCORE_URLS: "http://+:5000"
     ports:
-      - "5000:80"
-    networks:
-      - app_network
+      - "5000:5000"
 
 volumes:
   db_data:

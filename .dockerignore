@@ -1,0 +1,13 @@
+# Exclude bin and obj directories
+bin/
+obj/
+
+# Exclude user-specific files
+*.user
+*.vspscc
+*.vssscc
+
+# Exclude configuration files if you want to
+# (But in your case, ensure appsettings.json is not excluded)
+# appsettings.json
+# *.config

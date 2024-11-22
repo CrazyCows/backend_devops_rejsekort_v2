@@ -3,15 +3,16 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using backend_devops_rejsekort_v2.dto;
+using backend_devops_rejsekort_v2.dal;
 
 namespace backend_devops_rejsekort_v2.controllers
 {
     public class DeleteController : ControllerBase
     {
 
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public DeleteController(UserManager<IdentityUser> userManager)
+        public DeleteController(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
