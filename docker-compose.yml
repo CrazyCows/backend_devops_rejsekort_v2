@@ -2,19 +2,15 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:16
-    container_name: school_devops
-    restart: always
+    image: postgres:15
     environment:
-      POSTGRES_DB: mydb
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydb
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-    volumes:
-      - db_data:/var/lib/postgresql/data
-    
-    
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U myuser -d mydb"]
       interval: 10s
@@ -23,17 +19,21 @@ services:
 
   app:
     build: .
-    depends_on:
-        db:
-            condition: service_healthy
-    environment:
-      ASPNETCORE_ENVIRONMENT: "Development"
-      ASPNETCORE_URLS: "http://+:5000"
     ports:
       - "5000:5000"
 
-volumes:
-  db_data:
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: Host=db;Port=5432;Database=mydb;Username=myuser;Password=mypassword
+      Authentication__Google__ClientId: ${Authentication__Google__ClientId}
+      Authentication__Google__ClientSecret: ${Authentication__Google__ClientSecret}
+      Authentication__Jwt__Key: ${Authentication__Jwt__Key}
+      Authentication__Jwt__Issuer: ${Authentication__Jwt__Issuer}
+      Authentication__Jwt__Audience: ${Authentication__Jwt__Audience}
+      ASPNETCORE_URLS: "http://+:5000"
+    depends_on:
+      db:
+        condition: service_healthy
 
-networks:
-  app_network:
+volumes:
+  postgres-data:

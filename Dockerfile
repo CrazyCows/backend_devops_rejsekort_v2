@@ -1,19 +1,17 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
-COPY backend_devops_rejsekort_v2.csproj ./
+COPY *.csproj ./
 RUN dotnet restore
 
-COPY . ./ 
+COPY . ./
 RUN dotnet publish -c Release -o out
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 
-COPY --from=build /app/out ./
+COPY --from=build /app/out .
 
-EXPOSE 80
+EXPOSE 5000
 
 ENTRYPOINT ["dotnet", "backend_devops_rejsekort_v2.dll"]
