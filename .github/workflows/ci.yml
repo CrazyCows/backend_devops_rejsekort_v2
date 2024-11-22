@@ -1,0 +1,76 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    env:
+      Authentication__Google__ClientId: ${{ secrets.Authentication__Google__ClientId }}
+      Authentication__Google__ClientSecret: ${{ secrets.Authentication__Google__ClientSecret }}
+      Authentication__Jwt__Key: ${{ secrets.Authentication__Jwt__Key }}
+      Authentication__Jwt__Issuer: ${{ secrets.Authentication__Jwt__Issuer }}
+      Authentication__Jwt__Audience: ${{ secrets.Authentication__Jwt__Audience }}
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: myuser
+          POSTGRES_PASSWORD: mypassword
+          POSTGRES_DB: mydb
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          for i in {1..10}; do
+            nc -zv localhost 5432 && break
+            echo "Waiting for PostgreSQL to start..."
+            sleep 5
+          done
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build the application
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Run tests
+        run: dotnet test --no-build --verbosity normal
+
+  docker-build:
+    needs: build-test
+    runs-on: ubuntu-latest
+    env:
+      Authentication__Google__ClientId: ${{ secrets.Authentication__Google__ClientId }}
+      Authentication__Google__ClientSecret: ${{ secrets.Authentication__Google__ClientSecret }}
+      Authentication__Jwt__Key: ${{ secrets.Authentication__Jwt__Key }}
+      Authentication__Jwt__Issuer: ${{ secrets.Authentication__Jwt__Issuer }}
+      Authentication__Jwt__Audience: ${{ secrets.Authentication__Jwt__Audience }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Docker image
+        run: docker build -t your-image-name:latest .
+
