@@ -24,7 +24,7 @@ services:
 
     environment:
       ASPNETCORE_ENVIRONMENT: Development
-      ConnectionStrings__DefaultConnection: Host=db;Port=5432;Database=mydb;Username=myuser;Password=mypassword
+      ConnectionStrings__DefaultConnection: Host=localhost;Port=5432;Database=mydb;Username=myuser;Password=mypassword
       Authentication__Google__ClientId: ${Authentication__Google__ClientId}
       Authentication__Google__ClientSecret: ${Authentication__Google__ClientSecret}
       Authentication__Jwt__Key: ${Authentication__Jwt__Key}
