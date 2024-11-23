@@ -26,7 +26,7 @@ namespace backend_devops_rejsekort_v2
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<UserContext>(options =>
-                options.UseNpgsql("User Id=postgres.qzwzbgbyjwetufivpejo;Password=Studyhard1234.;Server=aws-0-eu-central-1.pooler.supabase.com;Port=5432;Database=postgres;"));
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
