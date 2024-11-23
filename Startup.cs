@@ -90,7 +90,7 @@ namespace backend_devops_rejsekort_v2
 
             app.UseAuthentication();
             app.UseAuthorization();
-
+            
             EnsureDatabaseCreated(serviceProvider);
 
             app.UseEndpoints(endpoints =>
