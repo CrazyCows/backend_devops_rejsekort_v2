@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using backend_devops_rejsekort_v2.services;
 using System;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace backend_devops_rejsekort_v2
 {
@@ -49,29 +48,12 @@ namespace backend_devops_rejsekort_v2
                 options.SaveToken = true;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    ValidateIssuer = true,
-                    ValidateAudience = true,
-                    ValidateIssuerSigningKey = true,
-                    ValidIssuer = jwtSettings["Issuer"], // Your app's issuer
-                    ValidAudience = jwtSettings["Audience"], // Your app's audience
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateIssuerSigningKey = false,
+                    ValidIssuer = jwtSettings["Issuer"],
+                    ValidAudience = jwtSettings["Audience"],
                     IssuerSigningKey = new SymmetricSecurityKey(key)
-                };
-
-                options.Events = new JwtBearerEvents
-                {
-                    OnTokenValidated = async context =>
-                    {
-                        var jwtSecurityToken = context.SecurityToken as JwtSecurityToken;
-                        if (jwtSecurityToken != null && jwtSecurityToken.Issuer == "https://accounts.google.com")
-                        {
-                            // Validate Google token
-                            var googleClientId = Configuration["Authentication:Google:ClientId"];
-                            if (!jwtSecurityToken.Audiences.Contains(googleClientId))
-                            {
-                                context.Fail("Invalid Google token audience.");
-                            }
-                        }
-                    }
                 };
             });
 
