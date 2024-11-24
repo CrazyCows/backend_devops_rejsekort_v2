@@ -30,7 +30,7 @@ namespace backend_devops_rejsekort_v2.controllers
                 return BadRequest(new { error = "No location is given" });
             }
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.FindFirstValue(ClaimTypes.Email);
 
             if (string.IsNullOrEmpty(userId))
             {
@@ -38,7 +38,7 @@ namespace backend_devops_rejsekort_v2.controllers
             }
 
 
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByEmailAsync(userId);
 
             if (user == null)
             {
@@ -78,14 +78,14 @@ namespace backend_devops_rejsekort_v2.controllers
                 return BadRequest(new { error = "No location is given" });
             }
 
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.FindFirstValue(ClaimTypes.Email);
 
             if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized(new { error = "User is not authenticated" });
             }
 
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByEmailAsync(userId);
 
             if (user == null)
             {
@@ -112,7 +112,7 @@ namespace backend_devops_rejsekort_v2.controllers
     [HttpPost]
     public async Task<IActionResult> LocationSignedIn()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userId = User.FindFirstValue(ClaimTypes.Email);
 
 
             if (string.IsNullOrEmpty(userId)) {
