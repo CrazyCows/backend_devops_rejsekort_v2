@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Security.Claims;
 
 namespace backend_devops_rejsekort_v2.controllers
@@ -15,11 +16,13 @@ namespace backend_devops_rejsekort_v2.controllers
     {
         private readonly UserContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILogger<LocationController> _logger;
 
-        public LocationController(UserContext context, UserManager<ApplicationUser> userManager)
+        public LocationController(UserContext context, UserManager<ApplicationUser> userManager, ILogger<LocationController> logger)
         {
             _context = context;
             _userManager = userManager;
+            _logger = logger;
         }
 
         [HttpPost]
@@ -37,6 +40,9 @@ namespace backend_devops_rejsekort_v2.controllers
                 Console.WriteLine("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
                 Console.WriteLine(userId);
                 Console.WriteLine("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+                _logger.LogInformation("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+                _logger.LogInformation("User ID: {UserId}", userId ?? "null");
+                _logger.LogInformation("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
                 return Unauthorized(new { error = "User is not authenticated" });
             }
 
@@ -88,6 +94,10 @@ namespace backend_devops_rejsekort_v2.controllers
                 Console.WriteLine("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
                 Console.WriteLine(userId);
                 Console.WriteLine("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+                _logger.LogInformation("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+                _logger.LogInformation("User ID: {UserId}", userId ?? "null");
+                _logger.LogInformation("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+
                 return Unauthorized(new { error = "User is not authenticated" });
             }
 
@@ -124,6 +134,9 @@ namespace backend_devops_rejsekort_v2.controllers
             if (string.IsNullOrEmpty(userId))
             {
                 Console.WriteLine(userId);
+                _logger.LogInformation("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+                _logger.LogInformation("User ID: {UserId}", userId ?? "null");
+                _logger.LogInformation("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
                 return Unauthorized(new { error = "User is not Authenticated" } );
             }
 
