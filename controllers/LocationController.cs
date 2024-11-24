@@ -11,7 +11,7 @@ namespace backend_devops_rejsekort_v2.controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    [Authorize] // Ensure the user is authenticated
+    [Authorize]
     public class LocationController : ControllerBase
     {
         private readonly UserContext _context;
