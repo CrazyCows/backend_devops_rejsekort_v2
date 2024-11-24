@@ -34,6 +34,9 @@ namespace backend_devops_rejsekort_v2.controllers
 
             if (string.IsNullOrEmpty(userId))
             {
+                Console.WriteLine("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+                Console.WriteLine(userId);
+                Console.WriteLine("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
                 return Unauthorized(new { error = "User is not authenticated" });
             }
 
@@ -82,6 +85,9 @@ namespace backend_devops_rejsekort_v2.controllers
 
             if (string.IsNullOrEmpty(userId))
             {
+                Console.WriteLine("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
+                Console.WriteLine(userId);
+                Console.WriteLine("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
                 return Unauthorized(new { error = "User is not authenticated" });
             }
 
@@ -115,7 +121,9 @@ namespace backend_devops_rejsekort_v2.controllers
             var userId = User.FindFirstValue(ClaimTypes.Email);
 
 
-            if (string.IsNullOrEmpty(userId)) {
+            if (string.IsNullOrEmpty(userId))
+            {
+                Console.WriteLine(userId);
                 return Unauthorized(new { error = "User is not Authenticated" } );
             }
 
