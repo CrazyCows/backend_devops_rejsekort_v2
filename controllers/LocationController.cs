@@ -38,7 +38,7 @@ namespace backend_devops_rejsekort_v2.controllers
             }
 
 
-            var user = await _userManager.FindByEmailAsync(userId);
+            var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
             {
@@ -85,7 +85,7 @@ namespace backend_devops_rejsekort_v2.controllers
                 return Unauthorized(new { error = "User is not authenticated" });
             }
 
-            var user = await _userManager.FindByEmailAsync(userId);
+            var user = await _userManager.FindByIdAsync(userId);
 
             if (user == null)
             {
