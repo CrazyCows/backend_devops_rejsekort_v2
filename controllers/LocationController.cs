@@ -43,7 +43,7 @@ namespace backend_devops_rejsekort_v2.controllers
                 _logger.LogInformation("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
                 _logger.LogInformation("User ID: {UserId}", userId ?? "null");
                 _logger.LogInformation("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
-                return Unauthorized(new { error = "User is not authenticated" });
+                return BadRequest(new { error = "User is not authenticated" });
             }
 
 
@@ -98,7 +98,7 @@ namespace backend_devops_rejsekort_v2.controllers
                 _logger.LogInformation("User ID: {UserId}", userId ?? "null");
                 _logger.LogInformation("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^");
 
-                return Unauthorized(new { error = "User is not authenticated" });
+                return BadRequest(new { error = "User is not authenticated" });
             }
 
             var user = await _userManager.FindByEmailAsync(userId);
