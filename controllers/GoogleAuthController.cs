@@ -9,7 +9,7 @@ namespace backend_devops_rejsekort_v2.controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    internal class GoogleAuthController : ControllerBase
+    public class GoogleAuthController : ControllerBase
     {
 
         private readonly UserManager<ApplicationUser> _userManager;

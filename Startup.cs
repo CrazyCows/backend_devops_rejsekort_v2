@@ -83,7 +83,6 @@ namespace backend_devops_rejsekort_v2
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
-            // Existing code...
             app.UseCors("AllowAll");
 
             app.UseRouting();
